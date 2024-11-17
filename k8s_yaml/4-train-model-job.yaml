@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: model-training-job
+spec:
+  template:
+    spec:
+      containers:
+        - name: model-training
+          image: resnet18-mnist-train:1.0
+          volumeMounts:
+            - name: mnist-data
+              mountPath: /app/mnist
+            - name: model-volume
+              mountPath: /app/models
+            - name: log-volume
+              mountPath: /app/logs
+          envFrom:
+            - configMapRef:
+                name: train-model-config
+      volumes:
+        - name: mnist-data
+          persistentVolumeClaim:
+            claimName: mnist-pvc
+        - name: model-volume
+          persistentVolumeClaim:
+            claimName: model-pvc
+        - name: log-volume
+          persistentVolumeClaim:
+            claimName: log-pvc
+      restartPolicy: Never

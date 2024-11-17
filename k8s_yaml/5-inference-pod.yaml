@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inference-pod
+spec:
+  restartPolicy: Never
+  containers:
+    - name: inference-container
+      image: resnet18-mnist-inference:1.0
+      volumeMounts:
+        - name: mnist-data
+          mountPath: /app/mnist
+        - name: log-volume
+          mountPath: /app/logs
+  volumes:
+    - name: log-volume
+      persistentVolumeClaim:
+        claimName: log-pvc
+    - name: mnist-data
+      persistentVolumeClaim:
+        claimName: mnist-pvc

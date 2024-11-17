@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: train-model-config
+data:
+  BATCH_SIZE: "64"
+  NUM_SAMPLES: "1000"
+  EPOCHS: "15"
+  LEARNING_RATE: "0.0005"
